@@ -4,7 +4,7 @@ MAINTAINER alberto.miranda@bsc.es
 # install dependencies from package manager
 RUN set -eux && \
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         git \
         automake \
         autoconf \
@@ -17,26 +17,26 @@ RUN set -eux && \
         libboost-regex-dev \
         libprotobuf-dev \
         protobuf-compiler \
-        libprotobuf-c-dev \
+        libprotobuf-c0-dev \
         protobuf-c-compiler \
         libyaml-cpp-dev \
         libyaml-dev \
         libarchive-dev \
+        make \
         cmake && \
-        update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-4.9 20 && \
-        update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20 && \
-        update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20 && \
-        rm -rf /var/lib/apt/lists/*
+    update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-4.9 20 && \
+    update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20 && \
+    update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20 && \
+    rm -rf /var/lib/apt/lists/*
 
-# Allow build-time overrides
+# libprotobuf-c0-dev unfortunately doesn't provide a pkgconfig file
+COPY libprotobuf-c.pc /usr/lib/x86_64-linux-gnu/pkgconfig/
+
+# Allow build-time overrides for libfabric
 # Options for LIBFABRIC_VERSION: a valid tag
-# Options for MERCURY_VERSION: a valid tag
-# Example: docker build --build-arg LIBFABRIC_VERSION=v1.7.1 
-#                       --build-arg MERCURY_VERSION=v1.0.1
+#   Example: docker build --build-arg LIBFABRIC_VERSION=v1.7.1 
 ARG LIBFABRIC_VERSION=v1.7.1
-ARG MERCURY_VERSION=v1.0.1
-
-ENV LIBFABRIC_VERSION=${LIBFABRIC_VERSION} MERCURY_VERSION=${MERCURY_VERSION}
+ENV LIBFABRIC_VERSION=${LIBFABRIC_VERSION}
 
 # install dependencies not on package manager
 RUN set -eux && \
@@ -52,6 +52,12 @@ RUN set -eux && \
     ldconfig && \
     cd ../../ && \
     rm -rf libfabric
+
+# Allow build-time overrides for mercury
+# Options for MERCURY_VERSION: a valid tag
+#   Example: docker build --build-arg MERCURY_VERSION=v1.0.1
+ARG MERCURY_VERSION=v1.0.1
+ENV MERCURY_VERSION=${MERCURY_VERSION}
 
 RUN set -eux && \
     git clone https://github.com/mercury-hpc/mercury.git && \
