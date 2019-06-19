@@ -1,0 +1,28 @@
+language: bash
+services: docker
+
+env:
+  - COMPILER=gcc VERSION=4.8
+  - COMPILER=gcc VERSION=4.9
+  - COMPILER=gcc VERSION=5.4
+  - COMPILER=gcc VERSION=6.5
+  - COMPILER=gcc VERSION=7.4
+  - COMPILER=gcc VERSION=8.1
+  - COMPILER=gcc VERSION=9.1
+  - COMPILER=gcc VERSION=latest
+
+before_script:
+  - env | sort
+  - cd "$COMPILER"/"$VERSION"
+  - image="$COMPILER:$VERSION"
+
+script:
+  - |
+    (
+      set -Eeuo pipefail
+      set -x
+      docker build -t "$image" .
+    )
+
+after_script:
+  - docker images
