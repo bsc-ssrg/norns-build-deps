@@ -27,7 +27,7 @@ before_script:
   - env | sort
   - cd "${COMPILER}/${COMPILER_VERSION}"
   - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-libfabric${LIBFABRIC_VERSION}-mercury${MERCURY_VERSION}"
-  - ( docker pull "${ORGANIZATION}/${IMAGE}" && docker tag "${ORGANIZATION}/${IMAGE}" cached_image:latest && - docker rmi "${ORGANIZATION}/${IMAGE}" ) || true
+  - ( docker pull "${ORGANIZATION}/${IMAGE}" && docker tag "${ORGANIZATION}/${IMAGE}" cached_image:latest && docker rmi "${ORGANIZATION}/${IMAGE}" ) || true
   - docker images
 
 script:
