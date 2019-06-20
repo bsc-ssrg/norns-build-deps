@@ -28,8 +28,8 @@ before_script:
   - cd "${COMPILER}/${COMPILER_VERSION}"
   - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-libfabric${LIBFABRIC_VERSION}-mercury${MERCURY_VERSION}"
   - CACHED_IMAGE="cached_image:latest"
-  - ( docker pull "${ORGANIZATION}/${IMAGE}" && \
-      docker tag "${ORGANIZATION}/${IMAGE}" "${CACHED_IMAGE}" && \
+  - ( docker pull "${ORGANIZATION}/${IMAGE}" &&
+      docker tag "${ORGANIZATION}/${IMAGE}" "${CACHED_IMAGE}" &&
       docker rmi "${ORGANIZATION}/${IMAGE}" ) || true
   - docker images
 
