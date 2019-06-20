@@ -46,6 +46,9 @@ before_deploy:
 deploy:
   provider: script
   script: 
-    - docker push "$ORGANIZATION"/"$IMAGE"
+    - |
+      (
+        docker push "$ORGANIZATION"/"$IMAGE"
+      )
   on:
     branch: master
