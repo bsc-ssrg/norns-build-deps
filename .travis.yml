@@ -27,14 +27,16 @@ before_script:
   - env | sort
   - cd "${COMPILER}/${COMPILER_VERSION}"
   - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-libfabric${LIBFABRIC_VERSION}-mercury${MERCURY_VERSION}"
+  - ( docker pull "${ORGANIZATION}/${IMAGE}" && docker tag "${ORGANIZATION}/${IMAGE}" cached_image:latest && - docker rmi "${ORGANIZATION}/${IMAGE}" ) || true
+  - docker images
 
 script:
   - |
     (
       set -Eeuo pipefail
       set -x
-      docker build --pull --cache-from "${ORGANIZATION}/${IMAGE}" --build-arg LIBFABRIC_VERSION="v${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="v${MERCURY_VERSION}" --tag "${IMAGE}" .
-      docker run -ti --rm "$IMAGE" "$COMPILER" --version
+      docker build --pull --cache-from cached_image:latest --build-arg LIBFABRIC_VERSION="v${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="v${MERCURY_VERSION}" --tag "${ORGANIZATION}/${IMAGE}" .
+      docker run -ti --rm "${ORGANIZATION}/${IMAGE}" "${COMPILER}" --version
     )
 
 after_script:
@@ -48,7 +50,9 @@ deploy:
   script: 
     - |
       (
-        docker push "$ORGANIZATION"/"$IMAGE"
+        set -Eeuo pipefail
+        set -x
+        docker push "${ORGANIZATION}/${IMAGE}"
       )
   on:
     branch: master
