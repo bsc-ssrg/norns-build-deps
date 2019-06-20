@@ -23,7 +23,6 @@ env:
       #    - COMPILER=clang  COMPILER_VERSION=9.1  LIBFABRIC_VERSION=1.7.1  MERCURY_VERSION=1.0.1
 
 before_script:
-  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
   - env | sort
   - cd "${COMPILER}/${COMPILER_VERSION}"
   - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-libfabric${LIBFABRIC_VERSION}-mercury${MERCURY_VERSION}"
