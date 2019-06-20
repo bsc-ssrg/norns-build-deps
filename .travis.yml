@@ -32,7 +32,8 @@ script:
     (
       set -Eeuo pipefail
       set -x
-      docker build --build-arg LIBFABRIC_VERSION="${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="${MERCURY_VERSION}" --tag "${IMAGE}" .
+      docker build --pull --cache-from "${ORGANIZATION}/${IMAGE}" --build-arg LIBFABRIC_VERSION="v${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="v${MERCURY_VERSION}" --tag "${IMAGE}" .
+      docker run -ti --rm "$IMAGE" "$COMPILER" --version
     )
 
 after_script:
