@@ -25,7 +25,7 @@ env:
 before_script:
   - env | sort
   - cd "${COMPILER}/${COMPILER_VERSION}"
-  - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-${LIBFABRIC_VERSION}-${MERCURY_VERSION}"
+  - IMAGE="norns-build-deps:${COMPILER}${COMPILER_VERSION}-libfabric${LIBFABRIC_VERSION}-mercury${MERCURY_VERSION}"
 
 script:
   - |
@@ -33,6 +33,7 @@ script:
       set -Eeuo pipefail
       set -x
       #docker build -t "$IMAGE" .
+      docker build --build-arg LIBFABRIC_VERSION="${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="${MERCURY_VERSION}" --tag "${IMAGE}"
       echo "${ORGANIZATION}/${IMAGE}"
     )
 
