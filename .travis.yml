@@ -32,9 +32,7 @@ script:
     (
       set -Eeuo pipefail
       set -x
-      #docker build -t "$IMAGE" .
-      docker build --build-arg LIBFABRIC_VERSION="${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="${MERCURY_VERSION}" --tag "${IMAGE}"
-      echo "${ORGANIZATION}/${IMAGE}"
+      docker build --build-arg LIBFABRIC_VERSION="${LIBFABRIC_VERSION}" --build-arg MERCURY_VERSION="${MERCURY_VERSION}" --tag "${IMAGE}" .
     )
 
 after_script:
