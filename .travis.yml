@@ -48,11 +48,6 @@ before_deploy:
 deploy:
   provider: script
   script: 
-    - |
-      (
-        set -Eeuo pipefail
-        set -x
-        docker push "${ORGANIZATION}/${IMAGE}"
-      )
+    - docker push "${ORGANIZATION}/${IMAGE}"
   on:
     branch: master
