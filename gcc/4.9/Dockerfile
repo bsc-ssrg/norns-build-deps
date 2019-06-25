@@ -25,10 +25,12 @@ RUN set -eux && \
         make \
         cmake \
         realpath \
-        libperlio-gzip-perl && \
+        libperlio-gzip-perl \
+        libconfig-json-perl && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-4.9 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20 && \
+    update-alternatives --quiet --install /usr/bin/gcov gcov /usr/bin/gcov-4.9 20 && \
     rm -rf /var/lib/apt/lists/*
 
 # libprotobuf-c0-dev unfortunately doesn't provide a pkgconfig file

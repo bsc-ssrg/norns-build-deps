@@ -23,10 +23,12 @@ RUN set -eux && \
         libyaml-dev \
         libarchive-dev \
         cmake \
-        libperlio-gzip-perl && \
+        libperlio-gzip-perl \
+        libconfig-json-perl && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-6 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-6 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-6 20 && \
+    update-alternatives --quiet --install /usr/bin/gcov gcov /usr/bin/gcov-6 20 && \
     rm -rf /var/lib/apt/lists/*
 
 # install dependencies not on package manager
