@@ -4,7 +4,7 @@ MAINTAINER alberto.miranda@bsc.es
 # install dependencies from package manager
 RUN set -eux && \
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         git \
         automake \
         autoconf \
@@ -22,11 +22,12 @@ RUN set -eux && \
         libyaml-cpp-dev \
         libyaml-dev \
         libarchive-dev \
-        cmake && \
-        update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-7 20 && \
-        update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-7 20 && \
-        update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-7 20 && \
-        rm -rf /var/lib/apt/lists/*
+        cmake  \
+        lcov && \
+    update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-7 20 && \
+    update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-7 20 && \
+    update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-7 20 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Allow build-time overrides
 # Options for LIBFABRIC_VERSION: a valid tag
