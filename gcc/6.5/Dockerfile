@@ -22,7 +22,8 @@ RUN set -eux && \
         libyaml-cpp-dev \
         libyaml-dev \
         libarchive-dev \
-        cmake && \
+        cmake \
+        libperlio-gzip-perl && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-6 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-6 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-6 20 && \
