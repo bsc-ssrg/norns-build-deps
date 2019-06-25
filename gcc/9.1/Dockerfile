@@ -22,24 +22,27 @@ RUN set -eux && \
         libyaml-cpp-dev \
         libyaml-dev \
         libarchive-dev \
-        cmake \
-        lcov && \
+        cmake && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-9 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-9 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-9 20 && \
     rm -rf /var/lib/apt/lists/*
 
+# install dependencies not on package manager
+RUN set -eux && \
+    git clone https://github.com/linux-test-project/lcov.git && \
+    cd lcov && \
+    make test && \
+    make install && \
+    cd .. && \
+    rm -rf lcov
+
 # Allow build-time overrides
 # Options for LIBFABRIC_VERSION: a valid tag
-# Options for MERCURY_VERSION: a valid tag
 # Example: docker build --build-arg LIBFABRIC_VERSION=v1.7.1 
-#                       --build-arg MERCURY_VERSION=v1.0.1
 ARG LIBFABRIC_VERSION=v1.7.1
-ARG MERCURY_VERSION=v1.0.1
+ENV LIBFABRIC_VERSION=${LIBFABRIC_VERSION}
 
-ENV LIBFABRIC_VERSION=${LIBFABRIC_VERSION} MERCURY_VERSION=${MERCURY_VERSION}
-
-# install dependencies not on package manager
 RUN set -eux && \
     git clone https://github.com/ofiwg/libfabric.git && \
     cd libfabric && \
@@ -53,6 +56,12 @@ RUN set -eux && \
     ldconfig && \
     cd ../../ && \
     rm -rf libfabric
+
+# Allow build-time overrides
+# Options for MERCURY_VERSION: a valid tag
+# Example: docker build --build-arg MERCURY_VERSION=v1.0.1
+ARG MERCURY_VERSION=v1.0.1
+ENV MERCURY_VERSION=${MERCURY_VERSION}
 
 RUN set -eux && \
     git clone https://github.com/mercury-hpc/mercury.git && \

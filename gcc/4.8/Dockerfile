@@ -25,7 +25,7 @@ RUN set -eux && \
         libmpich-dev \
         make \
         cmake \
-        lcov && \
+        realpath && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-4.8 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20 && \
@@ -34,13 +34,21 @@ RUN set -eux && \
 # libprotobuf-c0-dev unfortunately doesn't provide a pkgconfig file
 COPY libprotobuf-c.pc /usr/lib/x86_64-linux-gnu/pkgconfig/
 
+# install dependencies not on package manager
+RUN set -eux && \
+    git clone https://github.com/linux-test-project/lcov.git && \
+    cd lcov && \
+    make test && \
+    make install && \
+    cd .. && \
+    rm -rf lcov
+
 # Allow build-time overrides for libfabric
 # Options for LIBFABRIC_VERSION: a valid tag
 #   Example: docker build --build-arg LIBFABRIC_VERSION=v1.7.1 
 ARG LIBFABRIC_VERSION=v1.7.1
 ENV LIBFABRIC_VERSION=${LIBFABRIC_VERSION}
 
-# install dependencies not on package manager
 RUN set -eux && \
     git clone https://github.com/ofiwg/libfabric.git && \
     cd libfabric && \
