@@ -25,9 +25,6 @@ RUN set -eux && \
         cmake && \
     rm -rf /var/lib/apt/lists/*
 
-# libprotobuf-c0-dev unfortunately doesn't provide a pkgconfig file
-COPY libprotobuf-c.pc /usr/lib/x86_64-linux-gnu/pkgconfig/
-
 ENV CC=clang
 ENV CXX=clang++
 ENV CPP="clang -E"
