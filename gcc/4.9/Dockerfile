@@ -24,9 +24,7 @@ RUN set -eux && \
         libarchive-dev \
         make \
         cmake \
-        realpath \
-        libperlio-gzip-perl \
-        libconfig-json-perl && \
+        lcov && \
     update-alternatives --quiet --install /usr/bin/cpp cpp /usr/bin/cpp-4.9 20 && \
     update-alternatives --quiet --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20 && \
     update-alternatives --quiet --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20 && \
@@ -37,13 +35,6 @@ RUN set -eux && \
 COPY libprotobuf-c.pc /usr/lib/x86_64-linux-gnu/pkgconfig/
 
 # install dependencies not on package manager
-RUN set -eux && \
-    git clone https://github.com/linux-test-project/lcov.git && \
-    cd lcov && \
-    make test && \
-    make install && \
-    cd .. && \
-    rm -rf lcov
 
 # Allow build-time overrides for libfabric
 # Options for LIBFABRIC_VERSION: a valid tag
